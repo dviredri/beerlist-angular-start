@@ -5,18 +5,18 @@
     <link rel="stylesheet" type="text/css" href="style.css">
 </head>
 
-<body ng-app="beerList">
+<body ng-app="carList">
     <div class="container">
         <div class="row">
             <div class="col-md-6 col-md-offset-3">
-                <h1 class="text-center">BeerList</h1>
+                <h1 class="text-center">CarList</h1>
                 <div class="page-header">
                 </div>
-                <!-- render beers here -->
-                <form ng-submit="addBeer()">
-                    <h3>Add a new beer</h3>
+                <!-- render cars here -->
+                <form ng-submit="addCar()">
+                    <h3>Add a new car</h3>
                     <div class="form-group">
-                        <input type="text" class="form-control" placeholder="Beer Name" ng-model="name"></input>
+                        <input type="text" class="form-control" placeholder="Car Name" ng-model="name"></input>
                     </div>
                     <div class="form-group">
                         <input type="text" class="form-control" placeholder="Style" ng-model="style"></input>
@@ -34,7 +34,7 @@
     </div>
     <script src="angular/angular.js"></script>
     <script src="js/app.js"></script>
-    <script src="js/services/beerFactory.js"></script>
+    <script src="js/services/carFactory.js"></script>
     <script src="js/controllers/mainController.js"></script>
 </body>
 
