@@ -10,15 +10,16 @@ var app = express();
 app.use(express.static('public'));
 app.use(express.static('node_modules'));
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({
+  extended: false
+}));
 
 app.post('/cars', function (req, res) {
-  var newCar = Car.create(req.body, function (err, car) {
+  Car.create(req.body, function (err, car) {
     if (err) {
       res.send('error saving new Car')
     } else {
-      console.log(Car)
-      res.send(Car)
+      res.send(car)
     }
   });
 })
@@ -36,7 +37,6 @@ app.delete('/cars/:deleteCarId', function (req, res) {
     if (err) {
       throw err;
     } else {
-      console.log("deleted")
       res.send(status);
     }
   })
@@ -45,7 +45,9 @@ app.delete('/cars/:deleteCarId', function (req, res) {
 app.put('/cars/:updateCarId', function (req, res) {
   var updateCarId = req.params.updateCarId;
 
-  Car.findByIdAndUpdate(updateCarId, req.body, { new: true }, function(err, car){
+  Car.findByIdAndUpdate(updateCarId, req.body, {
+    new: true
+  }, function (err, car) {
     if (err) {
       throw err;
     } else {
@@ -55,9 +57,28 @@ app.put('/cars/:updateCarId', function (req, res) {
   })
 });
 
+app.post('/cars/:updateCarId/rating', function (req, res) {
+  var ratingUpdate = req.body.userRating;
+  var updateRating = {
+    $inc: {
+      ratingTotal: ratingUpdate,
+      numberOfRatings: 1
+    }
+  }
+  Car.findByIdAndUpdate(req.params.updateCarId, updateRating ,
+    function (err, car) {
+      if (err) {
+        res.send('error saving rating new Car')
+      } else {
+        res.send(car)
+      
+    }
+  });
+})
 
 
-app.use(function(req, res, next) {
+
+app.use(function (req, res, next) {
   var err = new Error('Not Found');
   err.status = 404;
   next(err);
@@ -67,7 +88,7 @@ app.use(function(req, res, next) {
 
 // main error handler
 // warning - not for use in production code!
-app.use(function(err, req, res, next) {
+app.use(function (err, req, res, next) {
   res.status(err.status || 500);
   res.send({
     message: err.message,
@@ -75,6 +96,6 @@ app.use(function(err, req, res, next) {
   });
 });
 
-app.listen(8000, function() {
+app.listen(8000, function () {
   console.log("yo yo yo, on 8000!!")
 });
