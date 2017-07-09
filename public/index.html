@@ -45,7 +45,7 @@
                     <img ng-src="{{car.image_url}}" />
                     <p>
                         {{car.year}} {{car.make}} {{car.carModel}}</p>
-                    <p><i class="fa fa-star" aria-hidden="true"></i> Rating: {{car.ratingTotal / car.numberOfRatings}} </p>
+                    <p><i class="fa fa-star" aria-hidden="true"></i> Rating: {{car.ratingTotal / car.numberOfRatings}} rated by:({{car.numberOfRatings}}) </p>
                     <input type="text" class="form-control" placeholder="Enter rating 1-5 " ng-model="rating">
                     <button type="button" class="btn btn-primary" ng-click="removeCar()">Delete</button>       
                     <button type="button" class="btn btn-primary" ng-click="submitRating()">Submit Rating</button>
