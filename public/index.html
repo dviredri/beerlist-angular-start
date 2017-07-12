@@ -1,63 +1,73 @@
 <html>
 
 <head>
+    <base href="/">
     <link href="bootstrap/dist/css/bootstrap.css" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="style.css">
     <link rel="stylesheet" href="font-awesome/css/font-awesome.min.css">
 </head>
 
 <body ng-app="carList">
-    <div class="container" ng-controller="carsCtrl">
-        <div class="row">
-            <div class="col-md-6 col-md-offset-3" >
-                <h1 class="text-center">CarList</h1>
-                <div class="page-header">
+    <div class="container" ng-controller="masterCtrl">
+
+        <nav class="navbar navbar-inverse navbar-fixed-top navbar-custom" role="navigation">
+            <div class="container nav-con">
+                <!-- Brand and toggle get grouped for better mobile display -->
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <!--<span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>-->
+                </button>
+                    <a class="navbar-brand" href="http://localhost:8000/">Home</a>
                 </div>
-                <!-- render cars here -->
-                <form ng-submit="addCar()">
-                    <h3>Add a new car</h3>
-                    <div class="form-group">
-                        <input type="text" class="form-control" placeholder="Year" ng-model="year">
-                    </div>
-                    <div class="form-group">
-                        <input type="text" class="form-control" placeholder="Make" ng-model="make">
-                    </div>
-                    <div class="form-group">
-                        <input type="text" class="form-control" placeholder="Model" ng-model="model">
-                    </div>
-                    <div class="form-group">
-                        <input type="text" class="form-control" placeholder="Image URL" ng-model="image">
-                    </div>
-                    <button type="submit" class="btn btn-primary">Add</button>
-                </form>
-            </div>
-        </div>
+                <!-- Collect the nav links, forms, and other content for toggling -->
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <ul class="nav navbar-nav">
+       
+                        <li>
+                            <p class="navbar-text">{{currentUser.username}}</p>
+                        </li>
+                        <li>
+                                                        <p>
+                                <a ui-sref="login" class="btn btn-info btn-lg logout" ng-hide="currentUser.username">
+                                   Login
+                                        </a>
+                            </p>
+                        </li>
+                        <li>
+                            <p>
+                                <a ui-sref="register" class="btn btn-info btn-lg logout" ng-show="currentUser.username" ng-click="logout()">
+                                   <span class="glyphicon glyphicon-log-out"></span> Log out
+                                        </a>
+                            </p>
+                        </li>
+                    </ul>
 
 
-        <hr>
-        <div class="container-fluid bg-3 text-center styleCarsDiv">
-            <h3>Car List</h3><br>
-            <div class="form-group">
-                <input class="form-control" type="text" ng-model="carName" placeholder="Search by title">
-            </div>
-            <div class="row">
-                <div class="col-md-3" ng-repeat="car in cars track by $index" ng-click="addToMyCollection(car)">
-                    <img ng-src="{{car.image_url}}" />
-                    <p>
-                        {{car.year}} {{car.make}} {{car.carModel}}</p>
-                    <p><i class="fa fa-star" aria-hidden="true"></i> Rating: {{car.ratingTotal / car.numberOfRatings}} rated by:({{car.numberOfRatings}}) </p>
-                    <input type="text" class="form-control" placeholder="Enter rating 1-5 " ng-model="rating">
-                    <button type="button" class="btn btn-primary" ng-click="removeCar()">Delete</button>       
-                    <button type="button" class="btn btn-primary" ng-click="submitRating()">Submit Rating</button>
                 </div>
-            </div><br>
-        </div>
-
+                <!-- /.navbar-collapse -->
+            </div>
+            <!-- /.container -->
+        </nav>
     </div>
+
+    <div ui-view></div>
+
+
     <script src="angular/angular.js"></script>
+    <script src="@uirouter/core/_bundles/ui-router-core.js"></script>
+    <script src="@uirouter/angularjs/release/ui-router-angularjs.js"></script>
     <script src="js/app.js"></script>
-    <script src="js/services/carFactory.js"></script>
     <script src="js/controllers/mainController.js"></script>
+    <script src="js/controllers/masterController.js"></script>
+    <script src="js/controllers/carController.js"></script>
+    <script src="js/controllers/authCtrl.js"></script>
+    <script src="js/services/carFactory.js"></script>
+    <script src="js/services/authFactory.js"></script>
+
+
 </body>
 
 </html>

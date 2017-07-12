@@ -1,0 +1,50 @@
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 col-md-offset-3">
+                <h1 class="text-center">CarList</h1>
+                <div class="page-header">
+                </div>
+                <!-- render cars here -->
+                <form ng-submit="addCar()" ng-show="currentUser.username">
+                    <h3>Add a new car</h3>
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Year" ng-model="year">
+                    </div>
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Make" ng-model="make">
+                    </div>
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Model" ng-model="model">
+                    </div>
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Image URL" ng-model="image">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Add</button>
+                </form>
+            </div>
+        </div>
+
+
+        <hr>
+        <div class="container-fluid bg-3 text-center styleCarsDiv">
+            <h3>Car List</h3><br>
+            <div class="form-group">
+                <input class="form-control" type="text" ng-model="carName" placeholder="Search by title">
+            </div>
+            <div class="row">
+                <div class="col-md-3" ng-repeat="car in cars track by $index" ng-click="addToMyCollection(car)">
+                    <img ng-src="{{car.image_url}}"/> <a ui-sref="car({id: car._id, carParam: car})">Reviews</a>
+                    <p>
+                        {{car.year}} {{car.make | uppercase}} {{car.carModel | uppercase}}</p>
+                    <p><i class="fa fa-star" aria-hidden="true"></i> Rating: {{car.ratingTotal / car.numberOfRatings |number:
+                        2}} rated by:({{car.numberOfRatings}}) </p>
+                    <input type="text" class="form-control" placeholder="Enter rating 1-5 " ng-model="rating" ng-show="currentUser.username">
+                    <button type="button" class="btn btn-primary" ng-click="removeCar()" ng-show="currentUser.username">Delete</button >
+                    <button type="button" class="btn btn-primary" ng-click="submitRating()" ng-show="currentUser.username">Submit Rating</button>
+                </div>
+            </div><br>
+        </div>
+
+    </div>
+
+

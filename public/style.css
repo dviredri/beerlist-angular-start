@@ -1,13 +1,21 @@
-img{
+img {
     max-width: 100%;
     max-width: 100%
 }
 
-.fa-star{
+.fa-star {
     color: yellow;
 }
 
-.styleCarsDiv{
+.styleCarsDiv {
     background-color: #e8ebef;
+}
 
+body {
+    padding-top: 50px;
+}
+
+.logout {
+    padding-left: 10px;
+    padding-top: 5px;
 }

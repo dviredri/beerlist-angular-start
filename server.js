@@ -1,10 +1,17 @@
 var express = require('express');
-var bodyParser = require('body-parser')
+var expressSession = require('express-session');
+var bodyParser = require('body-parser');
+var passport = require('passport');
+var LocalStrategy = require('passport-local').Strategy;
 var mongoose = require('mongoose');
+var carsroutes = require('./routes/carsroutes');
+var userRoutes = require('./routes/userRoutes');
+var User = require("./models/UserModel");
+
 
 mongoose.connect('mongodb://localhost/cars');
 
-var Car = require('./models/carModel');
+
 var app = express();
 
 app.use(express.static('public'));
@@ -13,78 +20,37 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
   extended: false
 }));
+app.use(expressSession({
+  secret: 'yourSecretHere',
+  resave: false,
+  saveUninitialized: false
+}));
+app.use(passport.initialize());
+app.use(passport.session());
 
-app.post('/cars', function (req, res) {
-  Car.create(req.body, function (err, car) {
-    if (err) {
-      res.send('error saving new Car')
-    } else {
-      res.send(car)
-    }
-  });
-})
+passport.use(User.createStrategy());
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser())
 
-app.get('/cars', function (req, res) {
-  Car.find(function (error, cars) {
-    res.send(cars);
-  });
+
+
+app.use('/cars', carsroutes);
+app.use('/user', userRoutes);
+
+app.all('[^.]+', function (req, res) {
+  res.sendFile(__dirname + "/public/index.html");
 });
 
-app.delete('/cars/:deleteCarId', function (req, res) {
-  var deleteCarId = req.params.deleteCarId;
 
-  Car.findByIdAndRemove(deleteCarId, function (err, status) {
-    if (err) {
-      throw err;
-    } else {
-      res.send(status);
-    }
-  })
-});
-
-app.put('/cars/:updateCarId', function (req, res) {
-  var updateCarId = req.params.updateCarId;
-
-  Car.findByIdAndUpdate(updateCarId, req.body, {
-    new: true
-  }, function (err, car) {
-    if (err) {
-      throw err;
-    } else {
-      console.log("deleted")
-      res.send(car);
-    }
-  })
-});
-
-app.post('/cars/:updateCarId/rating', function (req, res) {
-  var ratingUpdate = req.body.userRating;
-  var updateRating = {
-    $inc: {
-      ratingTotal: ratingUpdate,
-      numberOfRatings: 1
-    }
-  }
-  Car.findByIdAndUpdate(req.params.updateCarId, updateRating ,
-    function (err, car) {
-      if (err) {
-        res.send('error saving rating new Car')
-      } else {
-        res.send(car)
-      
-    }
-  });
-})
-
-
+// app.get('/cars/:id', function(req, res, next) {
+//   Car.findById(req.params.id, handler(res, next));
+// });
 
 app.use(function (req, res, next) {
   var err = new Error('Not Found');
   err.status = 404;
   next(err);
 });
-
-
 
 // main error handler
 // warning - not for use in production code!
