@@ -11,7 +11,6 @@ var User = require("./models/UserModel");
 
 mongoose.connect('mongodb://localhost/cars');
 
-
 var app = express();
 
 app.use(express.static('public'));
@@ -32,8 +31,6 @@ passport.use(User.createStrategy());
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser())
 
-
-
 app.use('/cars', carsroutes);
 app.use('/user', userRoutes);
 
@@ -41,10 +38,6 @@ app.all('[^.]+', function (req, res) {
   res.sendFile(__dirname + "/public/index.html");
 });
 
-
-// app.get('/cars/:id', function(req, res, next) {
-//   Car.findById(req.params.id, handler(res, next));
-// });
 
 app.use(function (req, res, next) {
   var err = new Error('Not Found');

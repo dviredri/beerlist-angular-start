@@ -1,8 +1,22 @@
+
 var express = require('express');
 var router = express.Router();
 var Car = require("../models/CarModel");
 
-router.post('/', function (req, res) {
+var ensureAuthenticated = function(req, res, next) {
+  if (req.isAuthenticated()) {
+    return next();
+  } else {
+    return res.status('401').send({message: "Unauthorized" });
+  }
+};
+
+
+
+router.put('/:id', ensureAuthenticated, function(req, res, next) {
+});
+
+router.post('/',ensureAuthenticated, function (req, res) {
   Car.create(req.body, function (err, car) {
     if (err) {
       res.send('error saving new Car')
@@ -18,7 +32,7 @@ router.get('/', function (req, res) {
   });
 });
 
-router.get('/:carId', function (req, res) {
+router.get('/:carId',function (req, res) {
   Car.findById({
     _id: req.params.carId
   }, function (error, car) {
@@ -26,7 +40,7 @@ router.get('/:carId', function (req, res) {
   });
 });
 
-router.delete('/:deleteCarId', function (req, res) {
+router.delete('/:deleteCarId',ensureAuthenticated, function (req, res) {
   var deleteCarId = req.params.deleteCarId;
 
   Car.findByIdAndRemove(deleteCarId, function (err, status) {
@@ -38,7 +52,7 @@ router.delete('/:deleteCarId', function (req, res) {
   })
 });
 
-router.put('/:updateCarId', function (req, res) {
+router.put('/:updateCarId',ensureAuthenticated, function (req, res) {
   var updateCarId = req.params.updateCarId;
 
   Car.findByIdAndUpdate(updateCarId, req.body, {
@@ -53,7 +67,7 @@ router.put('/:updateCarId', function (req, res) {
   })
 });
 
-router.post('/:updateCarId/rating', function (req, res) {
+router.post('/:updateCarId/rating',ensureAuthenticated, function (req, res) {
   var ratingUpdate = req.body.userRating;
   var updateRating = {
     $inc: {
@@ -96,7 +110,7 @@ router.post('/:id/reviews', function (req, res) {
     })
 });
 
-router.delete('/:carId/reviews/:reviewId', function (req, res) {
+router.delete('/:carId/reviews/:reviewId',ensureAuthenticated,  function (req, res) {
   var update = {
     $pull: {
       reviews: {
